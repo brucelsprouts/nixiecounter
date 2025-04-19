@@ -1,0 +1,96 @@
+name: Update Nixie Counter
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # Run once per hour
+  workflow_dispatch:        # Allow manual triggering
+
+jobs:
+  update-counter:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests Pillow
+
+      - name: Create counter image
+        run: |
+          cat > create_counter.py << 'EOF'
+          import requests
+          import os
+          from PIL import Image
+          import io
+
+          # Configuration
+          GITHUB_USERNAME = '${{ github.repository_owner }}'  # Gets your GitHub username automatically
+          DIGITS_PATH = 'nixie numbers'
+          OUTPUT_FILE = 'counter.png'
+
+          # Get visitor count from komarev.com
+          def get_visitor_count():
+              try:
+                  response = requests.get(f'https://komarev.com/ghpvc/?username={GITHUB_USERNAME}&style=flat')
+                  import re
+                  match = re.search(r'message>(\d+)<\/text>', response.text)
+                  if match:
+                      count = match.group(1)
+                      return count
+                  return '0'
+              except Exception as e:
+                  print(f'Error getting count: {e}')
+                  return '0'
+
+          # Generate counter image using nixie tube digits
+          def create_counter_image(count):
+              # Pad to 11 digits with leading zeros (00000012345)
+              padded_count = count.zfill(11)
+              
+              # Load digit images
+              digit_images = []
+              for digit in padded_count:
+                  img_path = os.path.join(DIGITS_PATH, f'{digit}.png')
+                  digit_images.append(Image.open(img_path))
+              
+              # Calculate final image dimensions
+              width = sum(img.width for img in digit_images)
+              height = max(img.height for img in digit_images)
+              
+              # Create final image with black background
+              final_image = Image.new('RGBA', (width, height), (0, 0, 0, 255))
+              
+              # Paste each digit
+              x_offset = 0
+              for img in digit_images:
+                  final_image.paste(img, (x_offset, 0), img)
+                  x_offset += img.width
+              
+              # Save the final image
+              final_image.save(OUTPUT_FILE)
+              print(f'Counter image saved as {OUTPUT_FILE}')
+
+          # Main process
+          count = get_visitor_count()
+          print(f'Current visitor count: {count}')
+          create_counter_image(count)
+          EOF
+          
+          python create_counter.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add counter.png
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update nixie counter" && git push) 

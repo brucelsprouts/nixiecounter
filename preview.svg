@@ -1,8 +1,0 @@
-<svg width="650" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 650 200" style="background-color: transparent;">
-  <text x="325" y="100" font-family="Arial" font-size="16" text-anchor="middle" fill="#555">
-    Preview of Nixie Tube Counter (12345)
-  </text>
-  <text x="325" y="130" font-family="Arial" font-size="12" text-anchor="middle" fill="#777">
-    This is a placeholder. The actual counter will use Nixie tube images.
-  </text>
-</svg> 

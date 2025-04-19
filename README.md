@@ -1,113 +1,53 @@
-# Nixie Tube Visitor Counter
+# Nixie Tube GitHub Profile Views Counter
 
-A retro-style visitor counter for your GitHub profile that displays views using vintage Nixie tube digits.
+A custom GitHub profile views counter that displays visitor counts using stylish nixie tube digit images. This creates a retro-looking digital counter for your GitHub profile without requiring you to host a server.
 
-## Preview
-
-![Nixie Tube Visitor Counter](https://github.com/username/nixiecreadme/blob/main/preview.svg)
-
-## How to Use
-
-Add this to your GitHub profile README.md:
-
-```markdown
-![Nixie Tube Visitor Counter](https://your-deployed-app.herokuapp.com/count/your-username)
-```
-
-Replace `your-username` with your actual GitHub username and `your-deployed-app` with your own deployment URL.
-
-## Features
-
-- Unique vintage Nixie tube display aesthetic
-- Automatically updates with each profile view
-- Customizable display options
-
-## Deployment
-
-### Deploy to Heroku
-
-1. Create a Heroku account if you don't have one
-2. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
-3. Login to Heroku:
-   ```
-   heroku login
-   ```
-4. Create a new Heroku app:
-   ```
-   heroku create your-app-name
-   ```
-5. Deploy to Heroku:
-   ```
-   git push heroku main
-   ```
-
-### Deploy to Vercel
-
-1. Create a Vercel account if you don't have one
-2. Install Vercel CLI:
-   ```
-   npm i -g vercel
-   ```
-3. Deploy to Vercel:
-   ```
-   vercel
-   ```
+![Example Nixie Counter](https://raw.githubusercontent.com/YOURUSERNAME/nixiecreadme/main/counter.png)
 
 ## How It Works
 
-This counter uses the classic Nixie tube number display - a vintage display technology from the 1960s that uses glowing digit-shaped tubes to show numbers. Each time someone views your profile, the counter increments, displaying the total view count with these beautiful glowing digits.
+This counter leverages GitHub Actions and the komarev.com visitor counter service:
 
-The counter works by:
-1. Storing a count for each unique username
-2. Generating an SVG image using the provided Nixie tube digit images
-3. Returning the SVG to be displayed in your README
+1. A GitHub Actions workflow runs hourly
+2. It fetches your profile view count from komarev.com
+3. It generates a custom image using nixie tube digit images
+4. The image is committed back to the repository
+5. Your GitHub profile README displays this image
 
-## Local Development
+## Setup Instructions
 
-For local development and testing:
+### 1. Fork this repository
 
-1. Clone this repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Run the local server:
-   ```
-   npm start
-   ```
-4. Test the counter at `http://localhost:3000/count/test`
-5. View a preview at `http://localhost:3000/preview`
+First, fork this repository to your own GitHub account.
 
-## Quick Test
+### 2. Add the counter to your GitHub profile README
 
-To generate a quick example without running the server:
+Add the following line to your GitHub profile README.md:
 
-1. Run the test script:
-   ```
-   node test.js
-   ```
-2. This will generate an `example.svg` file in the root directory showing how the counter looks with the number "12345"
+```markdown
+![Nixie Tube Visitor Counter](https://raw.githubusercontent.com/YOURUSERNAME/nixiecreadme/main/counter.png)
+```
+
+Replace `YOURUSERNAME` with your actual GitHub username.
+
+### 3. Trigger the workflow
+
+Go to the "Actions" tab in your forked repository and manually trigger the "Update Nixie Counter" workflow to generate your first counter image.
+
+After the initial setup, the counter will update automatically once per hour.
 
 ## Customization
 
-You can modify the code to create your own version with:
-- Different digit spacing
-- Custom background colors
-- Different digit sizes
+You can customize how your counter looks by modifying the GitHub Actions workflow:
 
-## Persistence
+- Change the padding amount (currently set to 11 digits)
+- Adjust the update frequency (currently set to once per hour)
+- Modify the background color
 
-The default implementation uses a JSON file for persistence. For a production version, you should implement a more robust database solution using:
-- MongoDB
-- Redis
-- PostgreSQL
-- Or any other database of your choice
+## How It Counts Visitors
+
+This counter uses the komarev.com service to track actual profile views. The counter images (0-9.png) are then dynamically arranged based on your current view count.
 
 ## License
 
-MIT License - Feel free to use and modify for your own projects.
-
-## Acknowledgements
-
-- Inspired by other GitHub profile counters
-- Nixie tube number images used with permission 
+This project is open source and available under the MIT license.
