@@ -3,9 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// In-memory storage for visitor counts (in a real app, you'd use a database)
-const counters = {};
+const persistence = require('./persistence');
 
 // Path to nixie number images
 const NIXIE_PATH = path.join(__dirname, 'nixie numbers');
@@ -57,14 +55,27 @@ function generateCounterSvg(count) {
 app.get('/count/:username', (req, res) => {
   const username = req.params.username.toLowerCase();
   
-  // Increment counter for this username
-  if (!counters[username]) {
-    counters[username] = 0;
-  }
-  counters[username]++;
+  // Increment counter for this username using persistence module
+  const count = persistence.incrementCounter(username);
   
   // Generate SVG with the current count
-  const svg = generateCounterSvg(counters[username]);
+  const svg = generateCounterSvg(count);
+  
+  // Set appropriate headers and send the SVG
+  res.setHeader('Content-Type', 'image/svg+xml');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.send(svg);
+});
+
+// Route to get counter value without incrementing
+app.get('/view/:username', (req, res) => {
+  const username = req.params.username.toLowerCase();
+  
+  // Get counter value without incrementing
+  const count = persistence.getCounter(username);
+  
+  // Generate SVG with the current count
+  const svg = generateCounterSvg(count);
   
   // Set appropriate headers and send the SVG
   res.setHeader('Content-Type', 'image/svg+xml');
