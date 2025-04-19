@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nixie Tube Visitor Counter Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #e86c00;
+        }
+        .demo-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        .config-panel {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .config-panel input, .config-panel button {
+            margin: 5px;
+            padding: 8px;
+        }
+        button {
+            background-color: #e86c00;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff7b00;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nixie Tube Visitor Counter</h1>
+    
+    <div class="demo-section">
+        <h2>Live Demo</h2>
+        <p>This counter increments each time the page loads:</p>
+        <div id="nixie-counter-container"></div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>How to Add to Your GitHub README</h2>
+        <p>Add this code to your GitHub README.md file:</p>
+        <pre id="embed-code"><!-- Loading... --></pre>
+        
+        <div class="config-panel">
+            <h3>Customize Your Counter</h3>
+            <div>
+                <label for="namespace">Namespace (usually your GitHub username):</label>
+                <input type="text" id="namespace" placeholder="your-github-username">
+            </div>
+            <div>
+                <label for="key">Key (usually your repository name):</label>
+                <input type="text" id="key" placeholder="your-repo-name">
+            </div>
+            <div>
+                <label for="digits">Number of digits:</label>
+                <input type="number" id="digits" min="1" max="10" value="8">
+            </div>
+            <button id="generate-code">Generate Code</button>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Features</h2>
+        <ul>
+            <li>Displays visitor count using retro Nixie tube aesthetic</li>
+            <li>Increments count with each page visit</li>
+            <li>Customizable number of digits</li>
+            <li>Uses CountAPI for reliable counting</li>
+            <li>Works with any GitHub README or web page</li>
+            <li>Easy to implement with minimal code</li>
+        </ul>
+    </div>
+    
+    <footer>
+        Created with ♥ | <a href="https://github.com/YOUR_USERNAME/nixiecreadme">View on GitHub</a>
+    </footer>
+
+    <script src="nixie-counter.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize counter
+            const counter = new NixieCounter({
+                namespace: 'demo-counter',
+                key: 'github-readme'
+            });
+            await counter.initialize();
+            
+            // Setup code generation
+            const namespaceInput = document.getElementById('namespace');
+            const keyInput = document.getElementById('key');
+            const digitsInput = document.getElementById('digits');
+            const generateButton = document.getElementById('generate-code');
+            const embedCodeElement = document.getElementById('embed-code');
+            
+            // Generate initial code
+            updateEmbedCode();
+            
+            // Update code on button click
+            generateButton.addEventListener('click', updateEmbedCode);
+            
+            function updateEmbedCode() {
+                const namespace = namespaceInput.value || namespaceInput.placeholder;
+                const key = keyInput.value || keyInput.placeholder;
+                const digits = parseInt(digitsInput.value) || 8;
+                
+                const embedCode = NixieCounter.generateEmbedCode({
+                    namespace,
+                    key,
+                    digits
+                });
+                
+                embedCodeElement.textContent = embedCode;
+            }
+        });
+    </script>
+</body>
+</html> 
