@@ -61,6 +61,7 @@ header('Content-Type: text/html');
         .nixie-digit {
             height: 150px;
             margin: 0 2px;
+            display: block;
         }
     </style>
 </head>
