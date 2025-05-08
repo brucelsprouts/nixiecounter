@@ -1,46 +1,66 @@
-# Nixie Tube GitHub Profile Visitor Counter
+# Nixie Counter Documentation
 
-A retro-style visitor counter for your GitHub profile using vintage Nixie tube aesthetics.
+## Overview
+The Nixie Counter is a retro-style visitor counter that displays real-time statistics using a Nixie tube aesthetic. It is designed to be embedded in GitHub profile READMEs or any web page, fetching and displaying the latest data from your server.
 
-## How It Works
+---
 
-This counter displays your GitHub profile views with the classic look of Nixie tube displays - those vintage numerical indicators used in the 1960s and 70s that gave off a warm orange glow.
+## How to Use
 
-## Usage
+### For GitHub Profile or Web Page
 
-Add the following to your GitHub profile README.md:
+1. **Add the following line to your README.md or HTML:**
+   ```markdown
+   ![Nixie Counter](http://YOUR_SERVER_IP_OR_DOMAIN/simple.php?username=YOUR_GITHUB_USERNAME)
+   ```
+   - Replace `YOUR_SERVER_IP_OR_DOMAIN` with your server's public IP or domain (e.g., `192.18.158.188` or `nixie.brucelsprouts.com`).
+   - Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username.
+
+2. **The counter will automatically increment and display the current count each time your profile or page is loaded.**
+3. **No user interaction is required.**
+
+---
+
+## Technical Details
+
+- **Current server IP:** `192.18.158.188` (update as needed)
+- **Planned domain:** `nixie.brucelsprouts.com` (pending DNS setup)
+- **Image-based rendering:** The counter is served as a single PNG image, generated dynamically by PHP.
+- **Update frequency:** The counter updates in real time on direct access, but may be cached for several minutes or hours when embedded in GitHub READMEs due to GitHub's image caching.
+- **Customization:**  
+  - `digits`: Minimum number of digits to display (default: 6)  
+    Example: `...?username=YOURNAME&digits=8`
+  - `base`: Starting count value (default: 0)  
+    Example: `...?username=YOURNAME&base=1000`
+
+---
+
+## Notes
+
+- **GitHub Caching:**  
+  The counter may not update instantly on your GitHub profile due to GitHub's image caching. For real-time updates, visit the direct image URL in your browser.
+- **Live Counter:**  
+  You can always see your live, up-to-date viewer counter by visiting:
+  [http://192.18.158.188:8080/simple.php?username=YOUR_GITHUB_USERNAME](http://192.18.158.188:8080/simple.php?username=YOUR_GITHUB_USERNAME)
+- **Refresh:**  
+  If the counter appears stalled, refresh the page or wait for the cache to expire.
+- **Self-Hosting:**  
+  To host your own counter, see the INSTALLATION.md and README.md for setup instructions.
+
+---
+
+## Example
 
 ```markdown
-![Nixie Counter](http://your-server-domain.com/your-github-username)
+![Nixie Counter](http://192.18.158.188:8080/simple.php?username=brucelsprouts)
+```
+or (once DNS is set up):
+```markdown
+![Nixie Counter](https://nixie.brucelsprouts.com/simple.php?username=brucelsprouts)
 ```
 
-Replace `your-server-domain.com` with the domain where you've hosted this counter, and `your-github-username` with your actual GitHub username.
+---
 
-## Local Testing
+## Support
 
-For local testing, use a PHP server:
-
-```bash
-cd nixiecounter/public
-php -S localhost:8080
-```
-
-Then you can test the counter by visiting:
-- http://localhost:8080/anyusername
-
-## Installation
-
-1. Copy all files to your web server
-2. Make sure the `storage` directory is writable
-3. Ensure PHP has the GD library enabled
-
-## Features
-
-- Authentic retro Nixie tube style
-- Counts profile views
-- Unique counter per GitHub username
-- Easy to integrate into any GitHub profile
-
-## License
-
-MIT License 
+For questions, issues, or contributions, please open an issue or pull request on the [GitHub repository](https://github.com/brucelsprouts/nixiecreadme).
