@@ -51,24 +51,29 @@ header('Content-Type: text/html');
             margin: 0;
             padding: 0;
             background-color: transparent;
+            overflow: hidden;
         }
         .nixie-counter {
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: transparent;
+            line-height: 0;
+            gap: 0;
         }
         .nixie-digit {
             height: 150px;
-            margin: 0 2px;
-            display: block;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
     <div class="nixie-counter">
         <?php foreach (str_split($countStr) as $digit): ?>
-            <img class="nixie-digit" src="../images/<?php echo $digit; ?>.png" alt="<?php echo $digit; ?>">
+            <img class="nixie-digit" src="images/<?php echo $digit; ?>.png" alt="">
         <?php endforeach; ?>
     </div>
 </body>
