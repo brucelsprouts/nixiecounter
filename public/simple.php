@@ -39,42 +39,54 @@ $count += $base;
 // Format count with leading zeros
 $countStr = str_pad((string) $count, $minDigits, '0', STR_PAD_LEFT);
 
-// Generate HTML
-header('Content-Type: text/html');
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Nixie Tube Counter</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            background-color: transparent;
-            overflow: hidden;
-        }
-        .nixie-counter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            line-height: 0;
-            gap: 0;
-        }
-        .nixie-digit {
-            height: 150px;
-            margin: 0;
-            padding: 0;
-            display: inline-block;
-            vertical-align: middle;
-        }
-    </style>
-</head>
-<body>
-    <div class="nixie-counter">
-        <?php foreach (str_split($countStr) as $digit): ?>
-            <img class="nixie-digit" src="images/<?php echo $digit; ?>.png" alt="">
-        <?php endforeach; ?>
-    </div>
-</body>
-</html> 
+// Path to digit images
+define('DIGIT_PATH', __DIR__ . '/images/');
+
+// Load the first digit to get width/height
+$firstDigit = $countStr[0];
+$firstImgPath = DIGIT_PATH . $firstDigit . '.png';
+if (!file_exists($firstImgPath)) {
+    // Fallback: create a blank image if digit image is missing
+    $digitWidth = 40;
+    $digitHeight = 80;
+    $firstImg = imagecreatetruecolor($digitWidth, $digitHeight);
+    $transparent = imagecolorallocatealpha($firstImg, 0, 0, 0, 127);
+    imagefill($firstImg, 0, 0, $transparent);
+    imagesavealpha($firstImg, true);
+} else {
+    $firstImg = imagecreatefrompng($firstImgPath);
+    $digitWidth = imagesx($firstImg);
+    $digitHeight = imagesy($firstImg);
+}
+
+// Create the final image
+$finalImg = imagecreatetruecolor($digitWidth * strlen($countStr), $digitHeight);
+imagesavealpha($finalImg, true);
+$trans_colour = imagecolorallocatealpha($finalImg, 0, 0, 0, 127);
+imagefill($finalImg, 0, 0, $trans_colour);
+
+// Copy each digit image onto the final image
+for ($i = 0; $i < strlen($countStr); $i++) {
+    $digit = $countStr[$i];
+    $imgPath = DIGIT_PATH . $digit . '.png';
+    if (file_exists($imgPath)) {
+        $digitImg = imagecreatefrompng($imgPath);
+    } else {
+        // Fallback: blank image if missing
+        $digitImg = imagecreatetruecolor($digitWidth, $digitHeight);
+        $transparent = imagecolorallocatealpha($digitImg, 0, 0, 0, 127);
+        imagefill($digitImg, 0, 0, $transparent);
+        imagesavealpha($digitImg, true);
+    }
+    imagecopy($finalImg, $digitImg, $i * $digitWidth, 0, 0, 0, $digitWidth, $digitHeight);
+    imagedestroy($digitImg);
+}
+
+// Output the final image
+header('Content-Type: image/png');
+imagepng($finalImg);
+imagedestroy($finalImg);
+if (isset($firstImg)) {
+    imagedestroy($firstImg);
+}
+// No HTML output 
