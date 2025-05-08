@@ -3,6 +3,8 @@
 ## Overview
 The Nixie Counter is a retro-style visitor counter that displays real-time statistics using a Nixie tube aesthetic. It is designed to be embedded in GitHub profile READMEs or any web page, fetching and displaying the latest data from your server.
 
+![Nixie Counter Example](http://192.18.158.188:8080/simple.php?username=nixiereadme)
+
 ---
 
 ## How to Use
