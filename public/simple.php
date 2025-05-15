@@ -83,8 +83,12 @@ for ($i = 0; $i < strlen($countStr); $i++) {
 }
 
 // Output the final image
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-header('ETag: "' . md5($countStr) . '"');
+$timestamp = time();
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $timestamp) . ' GMT');
+header('ETag: "' . md5($countStr . $timestamp) . '"');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 header('Content-Type: image/png');
 imagepng($finalImg);
 imagedestroy($finalImg);

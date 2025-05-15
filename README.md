@@ -56,12 +56,14 @@ The Nixie Counter is a retro-style visitor counter that displays real-time stati
 ## Example
 
 ```markdown
-![Nixie Counter](http://192.18.158.188:8080/simple.php?username=brucelsprouts&t=1)
+![Nixie Counter](http://192.18.158.188:8080/simple.php?username=brucelsprouts&cb=1)
 ```
 or (once DNS is set up):
 ```markdown
-![Nixie Counter](https://nixie.brucelsprouts.com/simple.php?username=brucelsprouts&t=1)
+![Nixie Counter](https://nixie.brucelsprouts.com/simple.php?username=brucelsprouts&cb=1)
 ```
+
+Note: If the counter appears to be stuck, you can increment the `cb` parameter (e.g., `cb=2`, `cb=3`, etc.) to force a refresh.
 
 ---
 
