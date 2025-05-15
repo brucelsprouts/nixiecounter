@@ -83,9 +83,8 @@ for ($i = 0; $i < strlen($countStr); $i++) {
 }
 
 // Output the final image
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+header('ETag: "' . md5($countStr) . '"');
 header('Content-Type: image/png');
 imagepng($finalImg);
 imagedestroy($finalImg);
