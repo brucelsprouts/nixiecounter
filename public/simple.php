@@ -4,8 +4,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Get the username from the query string
-$username = $_GET['username'] ?? 'default';
+// Get the username from the URL path instead of query string
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$pathParts = explode('/', trim($path, '/'));
+$username = $pathParts[0] ?? 'default';
 
 // Process additional parameters
 $minDigits = isset($_GET['digits']) ? (int)$_GET['digits'] : 6; // Default to 6 digits
