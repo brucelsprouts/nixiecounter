@@ -16,7 +16,7 @@ The Nixie Counter is a retro-style visitor counter that displays real-time stati
    ![Nixie Counter](http://192.18.158.188:8080/simple.php?username=YOUR_GITHUB_USERNAME&cb=1)
    ```
    - Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username.
-   - 192.18.158.188 is the ip address for my Orcale server, in the future nixie.brucelsprouts.com should become usable, still waiting on the DNS to go through.
+   - 192.18.158.188 is the ip address for my Orcale server, in the future nixie.brucelsprouts.com should become usable.
    
 
 2. **The counter will automatically increment and display the current count each time your profile or page is loaded.**
